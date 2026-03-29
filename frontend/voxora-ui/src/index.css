@@ -1,0 +1,196 @@
+:root {
+  --bg-pristine: #F8FAFC; /* Crisp Frost White */
+  --text-main: #0F172A; /* Slate 900 */
+  --text-muted: #64748B; /* Slate 500 */
+  --border-delicate: rgba(0, 0, 0, 0.06);
+  
+  --accent-cyan: #0284C7; /* Cerulean Blue */
+  --accent-peach: #059669; /* Emerald Green */
+
+  --accent-cyan: #0284C7; /* Cerulean Blue */
+  --accent-peach: #059669; /* Emerald Green */
+
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { 
+  width: 100%; min-height: 100vh;
+  overflow-x: hidden; 
+  background-color: var(--bg-pristine);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+#root {
+  position: relative;
+  z-index: 1; /* Establishes stacking context properly for elegant-bg */
+}
+
+.noise-overlay {
+  position: fixed; inset: 0; z-index: -5; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* =========================================
+   AURORA SWEEP (THE "WOW" INSPIRATION)
+   ========================================= */
+.elegant-bg {
+  position: fixed; inset: 0; z-index: -10;
+  background-color: var(--bg-pristine);
+  background-image: radial-gradient(circle, rgba(15, 23, 42, 0.08) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  background-position: 0 0;
+  animation: bgPan 40s linear infinite;
+}
+
+@keyframes bgPan {
+  from { background-position: 0 0; }
+  to { background-position: -32px -32px; }
+}
+
+.aurora-sweep-1 {
+  position: fixed; top: -10%; left: -10%; width: 70vw; height: 70vw;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 65%);
+  border-radius: 50%; filter: blur(90px); animation: sweepMotion 25s infinite alternate ease-in-out;
+  pointer-events: none; z-index: -8;
+}
+
+.aurora-sweep-2 {
+  position: fixed; bottom: -10%; right: -10%; width: 80vw; height: 80vw;
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.15) 0%, transparent 65%);
+  border-radius: 50%; filter: blur(100px); animation: sweepMotion 30s infinite alternate-reverse ease-in-out;
+  pointer-events: none; z-index: -8;
+}
+
+@keyframes sweepMotion {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5%, 3%) scale(1.05); }
+  66% { transform: translate(-3%, 4%) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* =========================================
+   TYPOGRAPHY
+   ========================================= */
+.heading {
+  font-family: var(--font-heading);
+  font-style: italic; /* The elegant slanting they asked for */
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+.italic-accent {
+  font-family: var(--font-heading);
+  font-weight: 700; 
+  font-style: italic;
+  display: inline-block;
+  background: linear-gradient(90deg, #0284C7, #059669); /* Cerulean to Emerald */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 4px;
+}
+
+/* =========================================
+   EXTREME MINIMALIST GLASSMORPHISM 
+   ========================================= */
+.glass-panel {
+  background: rgba(250, 250, 249, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border-delicate);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-delicate);
+  border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+@keyframes skeleton-pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+  border-color: rgba(8, 145, 178, 0.1);
+}
+
+/* =========================================
+   HARMONIC WAVES (HERO CENTERPIECE ANIMATION)
+   ========================================= */
+@keyframes harmonicMorph1 {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg); }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(180deg); }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(360deg); }
+}
+@keyframes harmonicMorph2 {
+  0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(0deg) scale(1.05); }
+  50% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; transform: rotate(-180deg) scale(0.95); }
+  100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(-360deg) scale(1.05); }
+}
+@keyframes harmonicMorph3 {
+  0% { border-radius: 50% 50% 40% 60% / 60% 40% 50% 50%; transform: rotate(0deg) scale(0.95); }
+  50% { border-radius: 40% 60% 60% 40% / 40% 50% 60% 50%; transform: rotate(180deg) scale(1.05); }
+  100% { border-radius: 50% 50% 40% 60% / 60% 40% 50% 50%; transform: rotate(360deg) scale(0.95); }
+}
+
+/* =========================================
+   BUTTONS & INPUTS
+   ========================================= */
+.btn-primary {
+  background: var(--text-main);
+  color: #fff; border: none; padding: 14px 32px; border-radius: 100px;
+  font-family: var(--font-body); font-weight: 500; font-size: 15px;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  background: #000;
+}
+.btn-secondary {
+  background: transparent; color: var(--text-main);
+  border: 1px solid rgba(0,0,0,0.1); padding: 14px 32px;
+  border-radius: 100px; font-family: var(--font-body); font-weight: 500;
+  font-size: 15px; cursor: pointer; transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background: rgba(0,0,0,0.02);
+  border-color: rgba(0,0,0,0.2);
+}
+
+.input-glass {
+  width: 100%; padding: 14px 20px; border-radius: 12px;
+  background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06);
+  color: var(--text-main); font-family: var(--font-body); font-size: 15px;
+  outline: none; transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+}
+.input-glass::placeholder { color: #A8A29E; }
+.input-glass:focus {
+  outline: none; border-color: var(--accent-cyan);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.1);
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 768px) {
+  .heading { letter-spacing: -0.5px; }
+  .glass-card { padding: 1.5rem !important; }
+  
+  /* Overrides for inline React style grids in Dashboard */
+  div[style*="column"] {
+    grid-template-columns: 1fr !important;
+  }
+}
