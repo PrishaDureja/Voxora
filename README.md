@@ -53,3 +53,7 @@ Voxora automates this process by intelligently processing and classifying feedba
 - Scikit-learn  
 - TF-IDF Vectorizer  
 - NLP preprocessing  
+
+### Author
+
+Prisha Dureja
