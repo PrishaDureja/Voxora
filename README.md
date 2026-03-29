@@ -39,14 +39,17 @@ Voxora automates this process by intelligently processing and classifying feedba
 
 ### Frontend
 
-- HTML  
-- CSS  
-- JavaScript  
+- React 19  
+- Vite  
+- React Router DOM  
+- Framer Motion & Recharts  
+- Tailwind CSS / Vanilla CSS  
 
 ### Backend
 
 - Python  
-- Flask  
+- Flask & Flask-CORS  
+- SQLite  
 
 ### Machine Learning
 
