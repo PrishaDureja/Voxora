@@ -1,5 +1,7 @@
 # Voxora: Experience Intelligence
 
+**[Live Demo / Deployed App](https://voxora-eight.vercel.app/)**
+
 ### AI-Powered Feedback Intelligence & Triage System
 
 Voxora is a premium, full-stack SaaS platform that converts unstructured user input into structured, actionable insights using Natural Language Processing. With its custom **Aurora Glass** UI, Voxora provides a world-class aesthetic experience while enabling administrators to dynamically understand sentiment, triage issues, and close the loop with users.
