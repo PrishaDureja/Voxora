@@ -42,6 +42,13 @@ export default function Feedback() {
 
   const handleAnalyse = async () => {
     if (!text.trim()) return
+
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu;
+    if (emojiRegex.test(text)) {
+      setError('Please remove emojis (like 💩) from your feedback. We require professional plain text only.');
+      return;
+    }
+
     setLoading(true); setError(''); setResult(null)
     try {
       const res = await analyzeFeedback({

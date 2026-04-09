@@ -1,4 +1,4 @@
-# ❄️ Voxora: Experience Intelligence
+# Voxora: Experience Intelligence
 
 ### AI-Powered Feedback Intelligence & Triage System
 
@@ -6,7 +6,7 @@ Voxora is a premium, full-stack SaaS platform that converts unstructured user in
 
 ---
 
-## 🚀 The Voxora Solution
+## The Voxora Solution
 
 Most feedback systems collect passive data but fail to extract meaningful insights. Manual analysis is time-consuming, inconsistent, and unscalable.
 
@@ -16,21 +16,21 @@ Voxora automates this entirely:
 
 ---
 
-## ✨ Core Features
+## Core Features
 
-### 💻 Frontend (Aurora Glass UI)
+### Frontend (Aurora Glass UI)
 - **Extreme Minimalist Glassmorphism:** Features a custom CSS design system using translucent glass cards, harmonic center-stage animations, and stunning background sweeps.
 - **Dynamic Dashboards:** Includes a dynamic overview with interactive Recharts (Bar, Area, Pie) and live data hydration.
 - **User History & Admin Replies:** Users can review their past feedback submissions on a sleek History tab and instantly see personalized Admin Replies docked identically to their context.
 
-### 🧠 Backend & Machine Learning
+### Backend & Machine Learning
 - **Sentiment Classification Pipeline:** Employs NLP preprocessing, TF-IDF Vectorization, and Scikit-learn models to gauge the exact mood of user input (Positive, Neutral, Critical).
 - **Issue & Keyword Detection:** Automatically segments complex feedback paragraphs into discrete `issues` and string `keywords`.
 - **Triage Center:** Auto-generates prioritized Action items directly from critical trends identified in the feedback streams.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 **Frontend Framework:** React (using Vite) + Framer Motion + Recharts
 **Styling Architecture:** Pure CSS (Aurora Glassmorphism System)
@@ -40,7 +40,7 @@ Voxora automates this entirely:
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### Backend Start
 ```bash
@@ -62,7 +62,7 @@ npm run dev
 
 ---
 
-## 📡 API Overview
+## API Overview
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
@@ -74,7 +74,7 @@ npm run dev
 
 ---
 
-## 🔮 Future Roadmap
+## Future Roadmap
 
 * Deep Learning Integration (BERT / Transformers)
 * Cloud Database Migrations (PostgreSQL / AWS RDS)
