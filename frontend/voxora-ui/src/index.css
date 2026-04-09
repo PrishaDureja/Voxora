@@ -1,7 +1,7 @@
 :root {
   --bg-pristine: #F8FAFC; /* Crisp Frost White */
   --text-main: #0F172A; /* Slate 900 */
-  --text-muted: #64748B; /* Slate 500 */
+  --text-muted: #475569; /* Slate 600 - Darkened for better readability */
   --border-delicate: rgba(0, 0, 0, 0.06);
   
   --accent-cyan: #0284C7; /* Cerulean Blue */
@@ -90,7 +90,7 @@ html, body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  padding: 0 4px;
+  padding: 0 4px 0.15em 4px; /* Added bottom padding to stop letters like g from being cut-off */
 }
 
 /* =========================================
@@ -175,7 +175,7 @@ html, body {
   outline: none; transition: all 0.3s ease;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
 }
-.input-glass::placeholder { color: #A8A29E; }
+.input-glass::placeholder { color: #57534E; /* Stone 600 - Darkened */ }
 .input-glass:focus {
   outline: none; border-color: var(--accent-cyan);
   background: rgba(255, 255, 255, 0.95);

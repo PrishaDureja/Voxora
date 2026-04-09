@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { analyzeFeedback, submitFeedback, getSuggestions, addSuggestion, getPolls, votePoll, upvoteSuggestion } from '../api/feedback'
+import { analyzeFeedback, submitFeedback, getSuggestions, addSuggestion, getPolls, votePoll, upvoteSuggestion, getUserFeedback } from '../api/feedback'
 import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 
@@ -106,7 +106,7 @@ export default function Feedback() {
           </p>
 
           <div style={{ display: 'flex', gap: '8px', background: '#FFFFFF', padding: '6px', borderRadius: '12px', marginBottom: '3rem', border: '1px solid rgba(0,0,0,0.04)', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
-            {['feedback', 'suggestions', 'polls'].map(t => (
+            {['feedback', 'history', 'suggestions', 'polls'].map(t => (
               <button key={t} onClick={() => setTab(t)} style={{
                 flex: 1, padding: '12px 4px', borderRadius: '8px', border: 'none', cursor: 'pointer',
                 fontSize: '13px', fontWeight: tab === t ? 500 : 400,
@@ -226,6 +226,7 @@ export default function Feedback() {
             )}
           </AnimatePresence>
 
+          {tab === 'history' && <HistoryTab userId={user?.id} />}
           {tab === 'suggestions' && <SuggestionsTab domain={domain} />}
           {tab === 'polls' && <PollsTab domain={domain} />}
 
@@ -367,6 +368,67 @@ function PollsTab({ domain }) {
             </div>
           )
         })}
+      </div>
+    </motion.div>
+  )
+}
+
+function HistoryTab({ userId }) {
+  const [history, setHistory] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!userId) return
+    getUserFeedback(userId)
+      .then(res => setHistory(res.data))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [userId])
+
+  if (loading) return <div style={{ color: 'var(--text-muted)', fontSize: '14px', paddingTop: '1rem' }}>Loading history...</div>
+  if (history.length === 0) return (
+    <div style={{ padding: '4rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.4)', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.03)' }}>
+      <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-main)', marginBottom: '8px' }}>No Feedback History</div>
+      <div style={{ color: 'var(--text-muted)', fontSize: '15px' }}>Your submitted feedback will appear here.</div>
+    </div>
+  )
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {history.map(fb => (
+          <div key={fb.id} className="glass-card" style={{ padding: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <span style={{
+                  fontSize: '11px', fontWeight: 600, padding: '4px 12px', borderRadius: '100px',
+                  background: fb.sentiment === 'positive' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(234, 88, 12, 0.08)',
+                  color: fb.sentiment === 'positive' ? '#059669' : 'var(--accent-peach)',
+                  border: `1px solid ${fb.sentiment === 'positive' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(234, 88, 12, 0.15)'}`
+                }}>
+                  {fb.sentiment === 'positive' ? 'Positive' : 'Critical'}
+                </span>
+                {fb.confidence && <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{fb.confidence}% lock</span>}
+              </div>
+              <span style={{ fontSize: '12px', color: '#57534E' }}>{fb.created_at?.split('T')[0]}</span>
+            </div>
+            <div style={{ fontSize: '15px', color: 'var(--text-main)', lineHeight: 1.6, marginBottom: fb.admin_reply ? '0' : '8px' }}>"{fb.text}"</div>
+            
+            {((fb.issues?.length > 0) || (fb.keywords?.length > 0)) && (
+               <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                 {fb.issues?.map(issue => <span key={issue} style={issuePill}>{issue.replace(/_/g, ' ')}</span>)}
+                 {fb.keywords?.map(k => <span key={k} style={keywordPill}>{k}</span>)}
+               </div>
+            )}
+
+            {fb.admin_reply && (
+              <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(5, 150, 105, 0.05)', borderRadius: '12px', borderLeft: '3px solid #059669' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#059669', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Admin Reply</div>
+                <div style={{ fontSize: '14px', color: 'var(--text-main)', lineHeight: 1.6 }}>{fb.admin_reply}</div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </motion.div>
   )

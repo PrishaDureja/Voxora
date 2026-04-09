@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area, CartesianGrid } from 'recharts'
 import { Mailbox, BarChart3, Lightbulb, CheckCircle2, AlertCircle, Clock } from 'lucide-react'
-import { getDashboard, getPolls, createPoll, getSuggestions } from '../api/feedback'
+import { getDashboard, getPolls, createPoll, getSuggestions, replyToFeedback } from '../api/feedback'
 import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 
@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [pollForm, setPollForm] = useState({ question: '', options: ['', ''] })
   const [pollCreated, setPollCreated] = useState(false)
   const [completedActions, setCompletedActions] = useState(new Set())
+  const [replyDrafts, setReplyDrafts] = useState({})
 
   useEffect(() => {
     Promise.all([
@@ -39,6 +40,20 @@ export default function Dashboard() {
     setPollCreated(true)
     getPolls(domain).then(res => setPolls(res.data))
     setPollForm({ question: '', options: ['', ''] })
+  }
+
+  const handleReply = async (id) => {
+    if (!id) return
+    const text = replyDrafts[id]
+    if (!text?.trim()) return
+    try {
+      await replyToFeedback(id, text)
+      const updatedFeed = data.recent_feedback.map(fb => fb.id === id ? { ...fb, admin_reply: text } : fb)
+      setData({ ...data, recent_feedback: updatedFeed })
+      setReplyDrafts({ ...replyDrafts, [id]: '' })
+    } catch {
+      setError('Could not post reply.')
+    }
   }
 
   const positivePct = data ? Math.round((data.positive_count / data.total_count) * 100) || 0 : 0
@@ -329,7 +344,7 @@ export default function Dashboard() {
                         </span>
                         {fb.confidence && <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{fb.confidence}% lock</span>}
                       </div>
-                      <span style={{ fontSize: '12px', color: '#A8A29E' }}>{fb.created_at?.split('T')[0]}</span>
+                      <span style={{ fontSize: '12px', color: '#57534E' }}>{fb.created_at?.split('T')[0]}</span>
                     </div>
                     <div style={{ fontSize: '15px', color: 'var(--text-main)', lineHeight: 1.6, marginBottom: '20px' }}>"{fb.text}"</div>
                     {((fb.issues?.length > 0) || (fb.keywords?.length > 0)) && (
@@ -338,6 +353,25 @@ export default function Dashboard() {
                         {fb.keywords?.map(k => <span key={k} style={keywordPill}>{k}</span>)}
                       </div>
                     )}
+                    
+                    {/* Admin Reply Section */}
+                    {fb.admin_reply ? (
+                      <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(5, 150, 105, 0.05)', borderRadius: '12px', borderLeft: '3px solid #059669' }}>
+                        <div style={{ fontSize: '11px', fontWeight: 700, color: '#059669', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Admin Reply</div>
+                        <div style={{ fontSize: '14px', color: 'var(--text-main)', lineHeight: 1.6 }}>{fb.admin_reply}</div>
+                      </div>
+                    ) : fb.id ? (
+                      <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
+                        <input
+                          className="input-glass"
+                          style={{ flex: 1, padding: '10px 16px', fontSize: '14px' }}
+                          placeholder="Write a reply..."
+                          value={replyDrafts[fb.id] || ''}
+                          onChange={e => setReplyDrafts({ ...replyDrafts, [fb.id]: e.target.value })}
+                        />
+                        <button onClick={() => handleReply(fb.id)} className="btn-primary" style={{ padding: '10px 24px', fontSize: '13px' }}>Reply</button>
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>

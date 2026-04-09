@@ -19,7 +19,7 @@ export default function Domains() {
       >
         <div style={sectionLabel}>Domains</div>
         <div style={{ fontSize: '38px', fontWeight: 700, letterSpacing: '-1px', marginBottom: '0.75rem', color: '#1C1917' }}>Choose your industry</div>
-        <div style={{ fontSize: '16px', color: '#78716C' }}>Select a domain to start analysing feedback tailored to your context.</div>
+        <div style={{ fontSize: '16px', color: '#57534E' }}>Select a domain to start analysing feedback tailored to your context.</div>
       </motion.div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
@@ -34,7 +34,7 @@ export default function Domains() {
           >
             <div style={{ fontSize: '28px', marginBottom: '1rem' }}>{d.icon}</div>
             <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '6px', color: '#1C1917' }}>{d.title}</div>
-            <div style={{ fontSize: '13px', color: '#78716C', lineHeight: 1.6 }}>{d.desc}</div>
+            <div style={{ fontSize: '13px', color: '#57534E', lineHeight: 1.6 }}>{d.desc}</div>
             <div style={tagStyle}>{d.tag}</div>
           </motion.div>
         ))}

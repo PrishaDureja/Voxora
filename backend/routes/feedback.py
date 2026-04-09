@@ -90,7 +90,7 @@ def dashboard():
     conn = get_connection()
     cursor = conn.cursor()
 
-    query = "SELECT sentiment, issues, keywords, text, created_at, confidence FROM feedback"
+    query = "SELECT id, sentiment, issues, keywords, text, created_at, confidence, admin_reply FROM feedback"
     params = []
     if domain:
         query += " WHERE domain=?"
@@ -106,7 +106,7 @@ def dashboard():
     all_keywords = []
 
     for row in rows:
-        sentiment, issues, keywords, text, created_at, confidence = row
+        fid, sentiment, issues, keywords, text, created_at, confidence, admin_reply = row
         try:
             parsed_issues = json.loads(issues) if issues else []
             parsed_keywords = json.loads(keywords) if keywords else []
@@ -115,21 +115,25 @@ def dashboard():
             parsed_keywords = []
 
         feedback_list.append({
+            "id": fid,
             "sentiment": sentiment,
             "issues": parsed_issues,
             "keywords": parsed_keywords,
-            "created_at": created_at
+            "created_at": created_at,
+            "admin_reply": admin_reply
         })
         all_keywords.extend(parsed_keywords)
 
         if len(recent_feedback) < 10:
             recent_feedback.append({
+                "id": fid,
                 "text": text[:120] + "..." if text and len(text) > 120 else text,
                 "sentiment": sentiment,
                 "confidence": confidence,
                 "issues": parsed_issues,
                 "keywords": parsed_keywords,
-                "created_at": created_at
+                "created_at": created_at,
+                "admin_reply": admin_reply
             })
 
     insights = generate_insights(feedback_list)
@@ -225,3 +229,53 @@ def vote_poll(option_id):
     conn.commit()
     conn.close()
     return jsonify({"message": "Vote recorded"})
+
+@feedback_bp.route("/feedback/<int:feedback_id>/reply", methods=["POST"])
+def admin_reply(feedback_id):
+    data = request.json
+    reply_text = data.get("reply_text", "")
+    
+    if not reply_text:
+        return jsonify({"error": "No reply text provided"}), 400
+        
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE feedback SET admin_reply = ? WHERE id = ?", (reply_text, feedback_id))
+    conn.commit()
+    conn.close()
+    
+    return jsonify({"message": "Reply saved successfully", "reply_text": reply_text})
+
+@feedback_bp.route("/feedback/user/<int:user_id>", methods=["GET"])
+def get_user_feedback(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, sentiment, issues, keywords, text, created_at, confidence, admin_reply FROM feedback WHERE user_id=? ORDER BY created_at DESC",
+        (user_id,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    feedback_list = []
+    for row in rows:
+        fid, sentiment, issues, keywords, text, created_at, confidence, admin_reply = row
+        try:
+            parsed_issues = json.loads(issues) if issues else []
+            parsed_keywords = json.loads(keywords) if keywords else []
+        except:
+            parsed_issues = []
+            parsed_keywords = []
+
+        feedback_list.append({
+            "id": fid,
+            "text": text,
+            "sentiment": sentiment,
+            "confidence": confidence,
+            "issues": parsed_issues,
+            "keywords": parsed_keywords,
+            "created_at": created_at,
+            "admin_reply": admin_reply
+        })
+
+    return jsonify(feedback_list)

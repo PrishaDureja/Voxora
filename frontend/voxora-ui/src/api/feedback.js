@@ -9,3 +9,5 @@ export const upvoteSuggestion = (id) => api.post(`/feedback/suggestions/${id}/up
 export const getPolls = (domain) => api.get('/feedback/polls', { params: { domain } })
 export const createPoll = (data) => api.post('/feedback/polls', data)
 export const votePoll = (optionId) => api.post(`/feedback/polls/${optionId}/vote`)
+export const replyToFeedback = (feedbackId, reply_text) => api.post(`/feedback/${feedbackId}/reply`, { reply_text })
+export const getUserFeedback = (userId) => api.get(`/feedback/user/${userId}`)

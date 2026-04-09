@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 
 const steps = [
-  { n: '1', title: 'Pick your domain', desc: 'Choose from restaurant, hotel, hospital, mess and more — feedback is tailored to your context.' },
-  { n: '2', title: 'Submit feedback', desc: 'Type your honest experience. Our AI reads it instantly — no forms, no grids, just words.' },
-  { n: '3', title: 'See your analysis', desc: 'Sentiment, detected issues, and a deep breakdown appear immediately after you submit.' },
+  { n: '1', title: 'Pick your domain', desc: 'Select your specific industry. We dynamically tailor the analysis to fit your unique context.' },
+  { n: '2', title: 'Submit feedback', desc: 'Type your honest experience in plain text. No complex forms or endless grids required.' },
+  { n: '3', title: 'See your analysis', desc: 'Get instant sentiment scoring, auto-detected issues, and a deep breakdown instantly.' },
 ]
 
 export default function HowItWorks() {
@@ -35,7 +35,7 @@ export default function HowItWorks() {
               {s.n}
             </div>
             <div className="heading" style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px', color: 'var(--text-main)' }}>{s.title}</div>
-            <div style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{s.desc}</div>
+            <div style={{ fontSize: '16px', color: '#334155', lineHeight: 1.6, fontWeight: 500 }}>{s.desc}</div>
           </motion.div>
         ))}
       </div>

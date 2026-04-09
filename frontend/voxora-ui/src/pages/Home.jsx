@@ -14,7 +14,6 @@ const domains = [
   { icon: <Activity strokeWidth={1.5} size={24} />, title: 'Hospital', tag: 'Healthcare', desc: 'Patient care, wait times, staff conduct, hygiene.' },
   { icon: <Map strokeWidth={1.5} size={24} />, title: 'Hostel', tag: 'Accommodation', desc: 'Dorms, facilities, safety, social atmosphere.' },
   { icon: <Soup strokeWidth={1.5} size={24} />, title: 'Mess', tag: 'Institutional food', desc: 'Daily meals, hygiene, portion size, variety.' },
-  { icon: <Globe strokeWidth={1.5} size={24} />, title: 'Other', tag: 'General', desc: 'Any service or product not listed above.' },
 ]
 
 export default function Home() {
@@ -50,7 +49,7 @@ export default function Home() {
           </p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
           {domains.map((d, i) => (
             <motion.div
               key={d.title}
@@ -60,13 +59,13 @@ export default function Home() {
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               onClick={() => handleDomainClick(d)}
-              style={{ cursor: 'pointer', padding: '2.5rem 2rem', display: 'flex', flexDirection: 'column' }}
+              style={{ width: '320px', flex: '0 0 auto', cursor: 'pointer', padding: '2.5rem 2rem', display: 'flex', flexDirection: 'column', textAlign: 'left' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(2, 132, 199, 0.08)', color: 'var(--accent-cyan)', marginBottom: '1.5rem' }}>
                 {d.icon}
               </div>
-              <div className="heading" style={{ fontSize: '22px', fontWeight: 500, marginBottom: '8px' }}>{d.title}</div>
-              <div style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.6, minHeight: '44px', flex: 1 }}>{d.desc}</div>
+              <div className="heading" style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px' }}>{d.title}</div>
+              <div style={{ fontSize: '15px', color: '#334155', lineHeight: 1.6, minHeight: '44px', flex: 1, fontWeight: 500 }}>{d.desc}</div>
               <div><span style={tagStyle}>{d.tag}</span></div>
             </motion.div>
           ))}

@@ -66,5 +66,11 @@ def init_db():
     )
     """)
 
+    # Try to add admin_reply column to existing feedback table
+    try:
+        cursor.execute("ALTER TABLE feedback ADD COLUMN admin_reply TEXT")
+    except sqlite3.OperationalError:
+        pass # Column already exists
+
     conn.commit()
     conn.close()
