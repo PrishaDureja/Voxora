@@ -20,3 +20,4 @@ threadpoolctl==3.6.0
 tqdm==4.67.3
 Werkzeug==3.1.7
 wheel==0.46.3
+gunicorn==21.2.0
