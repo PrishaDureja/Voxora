@@ -43,16 +43,20 @@ export default function Feedback() {
   const handleAnalyse = async () => {
     if (!text.trim()) return
 
+    // Silently sanitize input: completely strip all emojis anywhere in the text
     const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu;
-    if (emojiRegex.test(text)) {
-      setError('Please remove emojis (like 💩) from your feedback. We require professional plain text only.');
+    const sanitizedText = text.replace(emojiRegex, '').trim();
+
+    if (!sanitizedText) {
+      setError('Feedback cannot be entirely emojis. Please add professional text.');
       return;
     }
 
     setLoading(true); setError(''); setResult(null)
     try {
       const res = await analyzeFeedback({
-        text, domain,
+        text: sanitizedText,
+        domain,
         mood: mood?.value || null,
         selected_issues: selectedIssues.map(i => i.toLowerCase().replace(/ /g, '_'))
       })
